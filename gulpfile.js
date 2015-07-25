@@ -1,9 +1,9 @@
 var gulp = require("gulp")
 var iconfont = require("gulp-iconfont")
 var sass = require("gulp-sass")
-var jsonSass = require("json-sass")
-
+var jsonSass = require("json-sass/lib/jsToSassString")
 gulp.task("default", function(){
+
   gulp.src(["svg/*.svg"])
     .pipe(iconfont({
       fontName: "myFont",
@@ -16,7 +16,7 @@ gulp.task("default", function(){
         })
         return _glp
       })()
-      var vars = jsonSass.convertJs({
+      var vars = jsonSass({
         fontName: "myFont",
         fontPath: "./dest/fonts/",
         glyphs: glp
