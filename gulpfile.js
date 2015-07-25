@@ -4,7 +4,7 @@ var iconfont = require("gulp-iconfont")
 var sass = require("gulp-sass")
 var jsonSass = require("json-sass")
 var stream = require("stream")
-
+var through2 = require("through2")
 var iconfontValue = function(glyphs, options){
   var glp = (function(){
     var _glp = {}
@@ -19,14 +19,23 @@ var iconfontValue = function(glyphs, options){
   }
 }
 
-var fakeSrc = function(value){
+var fakeSrc = function(value, fileName){
   var scss = "$font: " + jsonSass.convertJs(value) + " !default;";
   var src = stream.Readable({objectMode: true})
   src._read = function () {
-    this.push(new gutil.File({ cwd: "", base: "", path: "fake", contents: new Buffer(scss) }))
+    this.push(new gutil.File({ cwd: "", base: "", path: fileName, contents: new Buffer(scss) }))
     this.push(null)
   }
   return src
+}
+
+var iconfontSassValue = function(opt){
+  function transform(file, enc, cb){
+    console.log(file)
+  }
+  function flush(cb){
+  }
+  return through2.obj(transform, flush)
 }
 
 gulp.task("default", function(){
@@ -39,8 +48,8 @@ gulp.task("default", function(){
     .on("glyphs", function(glyphs, options){
       var value = iconfontValue(glyphs, options)
       value.fontPath = fontDestPath
-      fakeSrc(value)
-        .pipe(gulp.dest("./dest/scss/var/_font.scss"))
+      fakeSrc(value, "var/_fonts.scss")
+        .pipe(gulp.dest("./dest/scss"))
     })
     .pipe(gulp.dest(fontDestPath))
 })
