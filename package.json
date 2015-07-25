@@ -17,6 +17,7 @@
     "gulp-sass": "^2.0.4",
     "gulp-util": "^3.0.6",
     "json-sass": "^1.3.5",
+    "quote": "^0.4.0",
     "through2": "^2.0.0"
   }
 }

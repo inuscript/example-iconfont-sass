@@ -5,11 +5,13 @@ var sass = require("gulp-sass")
 var jsonSass = require("json-sass")
 var stream = require("stream")
 var through2 = require("through2")
+var quote = require("quote")
+
 var iconfontValue = function(glyphs, options){
   var glp = (function(){
     var _glp = {}
     glyphs.forEach(function(glyph){
-      _glp[glyph.name] = '"\\' + glyph.unicode[0].charCodeAt(0).toString(16).toUpperCase() + '"'
+      _glp[glyph.name] = quote("\\" + glyph.unicode[0].charCodeAt(0).toString(16).toUpperCase())
     })
     return _glp
   })()
@@ -38,6 +40,7 @@ gulp.task("font", function(){
     }))
     .on("glyphs", function(glyphs, options){
       var value = iconfontValue(glyphs, options)
+      value.path = quote(fontDestPath)
       fakeSrc(value, "var/_fonts.scss")
         .pipe(gulp.dest("scss/auto-generated"))
     })
