@@ -9,7 +9,7 @@ var iconfontValue = function(glyphs, options){
   var glp = (function(){
     var _glp = {}
     glyphs.forEach(function(glyph){
-      _glp[glyph.name] = glyph.unicode[0].charCodeAt(0).toString(16).toUpperCase()
+      _glp[glyph.name] = '"\\' + glyph.unicode[0].charCodeAt(0).toString(16).toUpperCase() + '"'
     })
     return _glp
   })()
@@ -29,27 +29,25 @@ var fakeSrc = function(value, fileName){
   return src
 }
 
-var iconfontSassValue = function(opt){
-  function transform(file, enc, cb){
-    console.log(file)
-  }
-  function flush(cb){
-  }
-  return through2.obj(transform, flush)
-}
-
-gulp.task("default", function(){
+gulp.task("font", function(){
   var fontDestPath = "./dest/fonts"
-  gulp.src(["svg/*.svg"])
+  return gulp.src(["svg/*.svg"])
     .pipe(iconfont({
       fontName: "myFont",
       timestamp: 10
     }))
     .on("glyphs", function(glyphs, options){
       var value = iconfontValue(glyphs, options)
-      value.fontPath = fontDestPath
       fakeSrc(value, "var/_fonts.scss")
-        .pipe(gulp.dest("./dest/scss"))
+        .pipe(gulp.dest("scss/auto-generated"))
     })
     .pipe(gulp.dest(fontDestPath))
 })
+
+gulp.task("sass", ["font"], function(){
+  gulp.src("scss/**/*.scss")
+    .pipe(sass())
+    .pipe(gulp.dest("./dest/css"))
+})
+
+gulp.task("default", ["font", "sass"])
