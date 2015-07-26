@@ -6,6 +6,8 @@ var jsonSass = require("json-sass")
 var stream = require("stream")
 var through2 = require("through2")
 var quote = require("quote")
+var svgicons2svgfont = require('gulp-svgicons2svgfont')
+var duplexer = require("plexer")
 
 var iconfontValue = function(glyphs, options){
   var glp = (function(){
@@ -21,8 +23,20 @@ var iconfontValue = function(glyphs, options){
   }
 }
 
+var iconfontSass = function(options){
+  var inStream = svgicons2svgfont(options)
+  var outStream = inStream.on('glyphs', function(glyphs, option){
+    var value = iconfontValue(glyphs, options)
+    // value.path = quote(fontDestPath)
+    fakeSrc(value, "var/_fonts.scss")
+      .pipe(gulp.dest("scss/auto-generated"))
+  })
+  duplexStream = duplexer({ objectMode: true }, inStream, outStream)
+  return duplexStream
+}
+
 var fakeSrc = function(value, fileName){
-  var scss = "$font: " + jsonSass.convertJs(value) + " !default;";
+  var scss = "$font: " + jsonSass.convertJs(value) + " !default;"
   var src = stream.Readable({objectMode: true})
   src._read = function () {
     this.push(new gutil.File({ cwd: "", base: "", path: fileName, contents: new Buffer(scss) }))
@@ -33,17 +47,19 @@ var fakeSrc = function(value, fileName){
 
 gulp.task("font", function(){
   var fontDestPath = "./dest/fonts"
+  var fontOpt = {
+    fontName: "myFont",
+    timestamp: 10
+  }
   return gulp.src(["svg/*.svg"])
-    .pipe(iconfont({
-      fontName: "myFont",
-      timestamp: 10
-    }))
-    .on("glyphs", function(glyphs, options){
-      var value = iconfontValue(glyphs, options)
-      value.path = quote(fontDestPath)
-      fakeSrc(value, "var/_fonts.scss")
-        .pipe(gulp.dest("scss/auto-generated"))
-    })
+    .pipe(iconfont(fontOpt))
+    // .on("glyphs", function(glyphs, options){
+    //   var value = iconfontValue(glyphs, options)
+    //   value.path = quote(fontDestPath)
+    //   fakeSrc(value, "var/_fonts.scss")
+    //     .pipe(gulp.dest("scss/auto-generated"))
+    // })
+    .pipe(iconfontSass(fontOpt))
     .pipe(gulp.dest(fontDestPath))
 })
 

@@ -17,8 +17,8 @@
 @mixin generate-icons($prefix, $name, $glyphs){
   %icon {
     font-family: "#{$name}";
-    -webkit-font-smoothing: antialiased; // しょうがない系のvendor prefix
-    -moz-osx-font-smoothing: grayscale; // しょうがない系のvendor prefix
+    -webkit-font-smoothing: antialiased; 
+    -moz-osx-font-smoothing: grayscale;
     font-style: normal;
     font-variant: normal;
     font-weight: normal;
