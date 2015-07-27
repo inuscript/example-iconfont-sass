@@ -1,3 +1,4 @@
+var del = require("del")
 var gulp = require("gulp")
 var gutil = require("gulp-util")
 var iconfont = require("gulp-iconfont")
@@ -45,6 +46,10 @@ var fakeSrc = function(value, fileName){
   return src
 }
 
+gulp.task("clean", function(){
+  del("dest")
+})
+
 gulp.task("font", function(){
   var fontDestPath = "./dest/fonts"
   var fontOpt = {
@@ -53,12 +58,6 @@ gulp.task("font", function(){
   }
   return gulp.src(["svg/*.svg"])
     .pipe(iconfont(fontOpt))
-    // .on("glyphs", function(glyphs, options){
-    //   var value = iconfontValue(glyphs, options)
-    //   value.path = quote(fontDestPath)
-    //   fakeSrc(value, "var/_fonts.scss")
-    //     .pipe(gulp.dest("scss/auto-generated"))
-    // })
     .pipe(iconfontSass(fontOpt))
     .pipe(gulp.dest(fontDestPath))
 })
@@ -69,4 +68,4 @@ gulp.task("sass", ["font"], function(){
     .pipe(gulp.dest("./dest/css"))
 })
 
-gulp.task("default", ["font", "sass"])
+gulp.task("default", ["clean", "font", "sass"])

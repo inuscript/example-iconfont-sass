@@ -13,6 +13,7 @@
     "gulp": "^3.9.0"
   },
   "dependencies": {
+    "del": "^1.2.0",
     "gulp-cond": "^1.0.0",
     "gulp-iconfont": "^3.0.3",
     "gulp-sass": "^2.0.4",
