@@ -9,6 +9,7 @@ var through2 = require("through2")
 var quote = require("quote")
 var svgicons2svgfont = require('gulp-svgicons2svgfont')
 var duplexer = require("plexer")
+var PLUGIN_NAME = "iconfont-sass"
 
 var iconfontValue = function(glyphs, options){
   var glp = (function(){
@@ -24,16 +25,35 @@ var iconfontValue = function(glyphs, options){
   }
 }
 
+var transform = function(options){
+  return function(err, buf, cb){
+    if(err) {
+      cb(new gutil.PluginError(PLUGIN_NAME, err, {showStack: true}));
+    }
+    try{
+      buf = new Buffer()
+    }catch(err2) {
+      cb(new gutil.PluginError(PLUGIN_NAME, err2, {showStack: true}));
+    }
+  }
+}
+
 var iconfontSass = function(options){
-  var inStream = svgicons2svgfont(options)
-  var outStream = inStream.on('glyphs', function(glyphs, option){
-    var value = iconfontValue(glyphs, options)
-    // value.path = quote(fontDestPath)
-    fakeSrc(value, "var/_fonts.scss")
-      .pipe(gulp.dest("scss/auto-generated"))
+  return through2(function(file, buf, cb){
+    var inStream = svgicons2svgfont(options)
+    var glpyhs = null
+    var outStream = inStream.on('glyphs', function(glyphs, option){
+      var value = iconfontValue(glyphs, options)
+      buf = new Buffer(value)
+      cb(buf)
+
+      return ;
+      // value.path = quote(fontDestPath)
+      // fakeSrc(value, "var/_fonts.scss")
+      // .pipe(gulp.dest("scss/auto-generated"))
+    })
   })
-  duplexStream = duplexer({ objectMode: true }, inStream, outStream)
-  return duplexStream
+  // var duplexStream = duplexer({ objectMode: true }, inStream, outStream)
 }
 
 var fakeSrc = function(value, fileName){
@@ -57,7 +77,7 @@ gulp.task("font", function(){
     timestamp: 10
   }
   return gulp.src(["svg/*.svg"])
-    .pipe(iconfont(fontOpt))
+    // .pipe(iconfont(fontOpt))
     .pipe(iconfontSass(fontOpt))
     .pipe(gulp.dest(fontDestPath))
 })
