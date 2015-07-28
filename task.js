@@ -24,18 +24,26 @@ var glyphsMap = function(glyphs){
 
 module.exports = function(options){
   var inputStream = svgicons2svgfont(options)
-  // var inputStream = iconfont(options)
   var outputStream = new stream.PassThrough({ objectMode: true });
   var _glyphs = undefined;
-  var _opt = undefined;
+  var _opt = undefined; 
+  var map = options.map || "font"
+  var asDefault = !!options.asDefault
+  var prefix = "$" + map + ": "
+  var suffix = asDefault ? " !default;" : ""
+
   inputStream.on('glyphs', function(glyphs, options){
     _glyphs = glyphs // memorize
     _opt = options
   }).pipe(through2.obj(function(file, enc, cb){
-    console.log(arguments)
+    file.path = gutil.replaceExtension(file.path, ".ttf");
     var value = glyphsMap(_glyphs)
-    var scss = "$font: " + jsonSass.convertJs(value) + " !default;"
+    var scss = prefix + jsonSass.convertJs(value) + suffix
     outputStream.push(new gutil.File({ cwd: "", base: "", path: "aaa.scss", contents: new Buffer(scss) }))
+    console.log("trans")
+    cb()
+  }, function(){
+    console.log("flush")
     outputStream.end();
   }))
   var duplexStream = plexer({ objectMode: true }, inputStream, outputStream)
