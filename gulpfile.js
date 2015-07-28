@@ -4,26 +4,10 @@ var gutil = require("gulp-util")
 var iconfont = require("gulp-iconfont")
 var sass = require("gulp-sass")
 var jsonSass = require("json-sass")
-var stream = require("stream")
-var through2 = require("through2")
 var quote = require("quote")
-var svgicons2svgfont = require('gulp-svgicons2svgfont')
+var gulpSvgicons2svgfont = require('gulp-svgicons2svgfont')
+var svgicons2svgfont = require('svgicons2svgfont')
 var duplexer = require("plexer")
-var PLUGIN_NAME = "iconfont-sass"
-
-var iconfontValue = function(glyphs, options){
-  var glp = (function(){
-    var _glp = {}
-    glyphs.forEach(function(glyph){
-      _glp[glyph.name] = quote("\\" + glyph.unicode[0].charCodeAt(0).toString(16).toUpperCase())
-    })
-    return _glp
-  })()
-  return {
-    fontName: options.fontName,
-    glyphs: glp
-  }
-}
 
 var transform = function(options){
   return function(err, buf, cb){
@@ -39,21 +23,25 @@ var transform = function(options){
 }
 
 var iconfontSass = function(options){
-  return through2(function(file, buf, cb){
-    var inStream = svgicons2svgfont(options)
-    var glpyhs = null
-    var outStream = inStream.on('glyphs', function(glyphs, option){
+  svgicons2svgfont(options)
+  return through2({objectMode: true}, function(file, buf, cb){
+    console.log(arguments)
+    cb()
+  })
+  var inStream = 
+  var outStream = through2({objectMode: true}, function(file, buf, cb){
+    inStream.on('glyphs', function(glyphs, option){
       var value = iconfontValue(glyphs, options)
       buf = new Buffer(value)
       cb(buf)
-
       return ;
       // value.path = quote(fontDestPath)
       // fakeSrc(value, "var/_fonts.scss")
       // .pipe(gulp.dest("scss/auto-generated"))
     })
   })
-  // var duplexStream = duplexer({ objectMode: true }, inStream, outStream)
+  var duplexStream = duplexer({ objectMode: true }, inStream, outStream)
+  return duplexStream
 }
 
 var fakeSrc = function(value, fileName){
@@ -77,7 +65,7 @@ gulp.task("font", function(){
     timestamp: 10
   }
   return gulp.src(["svg/*.svg"])
-    // .pipe(iconfont(fontOpt))
+    .pipe(iconfont(fontOpt))
     .pipe(iconfontSass(fontOpt))
     .pipe(gulp.dest(fontDestPath))
 })
