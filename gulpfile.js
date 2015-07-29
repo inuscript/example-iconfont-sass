@@ -7,37 +7,33 @@ var gulpSvgicons2svgfont = require('gulp-svgicons2svgfont')
 var svgicons2svgfont = require('svgicons2svgfont')
 var iconfontSass = require("./task")
 
-// var fakeSrc = function(value, fileName){
-//   var scss = "$font: " + jsonSass.convertJs(value) + " !default;"
-//   var src = stream.Readable({objectMode: true})
-//
-//   src._read = function () {
-//     this.push(new gutil.File({ cwd: "", base: "", path: fileName, contents: new Buffer(scss) }))
-//     this.push(null)
-//   }
-//   return src
-// }
-
 gulp.task("clean", function(){
   del("dest")
 })
 
-gulp.task("font", function(){
-  var fontDestPath = "./dest/fonts"
-  var fontOpt = {
+var fontSetting = {
+  src : ["svg/*.svg"],
+  dest : "./dest/fonts",
+  options : {
     fontName: "myFont",
     timestamp: 10
   }
-  return gulp.src(["svg/*.svg"])
-    // .pipe(iconfont(fontOpt))
-    .pipe(iconfontSass(fontOpt))
-    .pipe(gulp.dest(fontDestPath))
+}
+gulp.task("font", function(){
+  return gulp.src(fontSetting.src)
+    .pipe(iconfont(fontSetting.options))
+    .pipe(gulp.dest(fontSetting.dest))
 })
 
-gulp.task("sass", ["font"], function(){
+gulp.task("font-sass", function(){
+  return gulp.src(fontSetting.src)
+    .pipe(iconfontSass(fontSetting.options))
+    .pipe(gulp.dest("./auto-generated/var/fonts.scss"))
+})
+
+gulp.task("sass", ["font-sass"], function(){
   gulp.src("scss/**/*.scss")
     .pipe(sass())
     .pipe(gulp.dest("./dest/css"))
 })
-
-gulp.task("default", ["clean", "font", "sass"])
+gulp.task("default", ["clean", "sass"])
