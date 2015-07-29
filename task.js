@@ -10,27 +10,25 @@ var gutil = require("gulp-util")
 
 var PLUGIN_NAME = "iconfont-sass-map"
 
-var glyphsMap = function(glyphs){
-  var glp = (function(){
-    var _glp = {}
-    glyphs.forEach(function(glyph){
-      _glp[glyph.name] = quote("\\" + glyph.unicode[0].charCodeAt(0).toString(16).toUpperCase())
-    })
-    return _glp
-  })()
-  return {
-    glyphs: glp
-  }
-}
-
 var svgStream = function(options){
   var svgOption = extend({}, options)
   svgOption.log = function(){}
   return svgicons2svgfont(svgOption)
 }
 
+var glyphsMap = function(glyphs){
+  return glyphs.reduce(function(obj, glyph){
+    glyphs.forEach(function(glyph){
+      obj[glyph.name] = quote("\\" + glyph.unicode[0].charCodeAt(0).toString(16).toUpperCase())
+    })
+    return obj
+  }, {})
+}
+
 var getSassMapVaue = function(glyphs, appendMap){
-  var value = glyphsMap(glyphs)
+  var value = {
+    glyphs : glyphsMap(glyphs)
+  }
   return extend(value, appendMap)
 }
 
@@ -62,8 +60,7 @@ module.exports = function(opt){
     }
     var mapValue = getSassMapVaue(_glyphs, options.appendMap)
     var scss = getSassContent(mapValue, options.fontVariable, options.asDefault)
-  
-    file.path = gutil.replaceExtension(file.path, ".scss");
+    file.path = gutil.replaceExtension(file.path, ".scss")
     file.contents = new Buffer(scss)
     outputStream.push(file)
     cb()

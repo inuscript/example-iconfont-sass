@@ -28,7 +28,7 @@ gulp.task("font", function(){
 gulp.task("font-sass", function(){
   return gulp.src(fontSetting.src)
     .pipe(iconfontSass(fontSetting.options))
-    .pipe(gulp.dest("./auto-generated/var/fonts.scss"))
+    .pipe(gulp.dest("./dest/scss/fonts.scss"))
 })
 
 gulp.task("sass", ["font-sass"], function(){
