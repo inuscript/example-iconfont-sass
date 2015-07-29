@@ -4,8 +4,8 @@ var iconfont = require("gulp-iconfont")
 var sass = require("gulp-sass")
 var stream = require("stream")
 var gulpSvgicons2svgfont = require('gulp-svgicons2svgfont')
-var svgicons2svgfont = require('svgicons2svgfont')
-var iconfontSass = require("./task")
+var iconfontJson = require("gulp-iconfont-json")
+var jsonSass = require("json-sass")
 
 gulp.task("clean", function(){
   del("dest")
@@ -27,8 +27,9 @@ gulp.task("font", function(){
 
 gulp.task("font-sass", function(){
   return gulp.src(fontSetting.src)
-    .pipe(iconfontSass(fontSetting.options))
-    .pipe(gulp.dest("./dest/scss/fonts.scss"))
+    .pipe(iconfontJson(fontSetting.options))
+    .pipe(jsonSass())
+    .pipe(gulp.dest("./dest/scss/"))
 })
 
 gulp.task("sass", ["font-sass"], function(){
