@@ -31,12 +31,15 @@ gulp.task("font", function(){
 })
 
 gulp.task("font-sass", function(){
+  var inj = transform(function(filename){
+    return jsonSass({
+      prefix: "$font:",
+      suffix: " !default"
+    })
+  })
   return gulp.src(fontSetting.src)
     .pipe(iconfontGlyph(fontSetting.options))
-    .pipe(transform(jsonSass, {
-      prefix: "$font:",
-      suffix: "!default"
-    }))
+    .pipe(inj)
     .pipe(gulp.dest("./dest/scss/"))
 })
 
