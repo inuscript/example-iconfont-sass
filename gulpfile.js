@@ -2,7 +2,7 @@ var del = require("del")
 var gulp = require("gulp")
 var iconfont = require("gulp-iconfont")
 var sass = require("gulp-sass")
-var tsts = require("./test-task")
+var rename = require("gulp-rename");
 var stream = require("stream")
 var gulpSvgicons2svgfont = require('gulp-svgicons2svgfont')
 var iconfontGlyph = require("gulp-iconfont-glyph")
@@ -40,7 +40,8 @@ gulp.task("font-sass", function(){
   return gulp.src(fontSetting.src)
     .pipe(iconfontGlyph(fontSetting.options))
     .pipe(inj)
-    .pipe(gulp.dest("./dest/scss/"))
+    .pipe(rename("font.scss"))
+    .pipe(gulp.dest("./dest/scss-auto/"))
 })
 
 gulp.task("sass", ["font-sass"], function(){

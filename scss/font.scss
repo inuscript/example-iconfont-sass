@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import "./auto-generated/var/fonts";
+@import "../dest/scss-auto/font.scss";
 
 @mixin font-face($path, $name){
   $url: #{$path}#{$name};

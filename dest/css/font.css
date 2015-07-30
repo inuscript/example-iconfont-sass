@@ -1,11 +1,9 @@
-@charset "UTF-8";
 @font-face {
-  font-family: myFont;
-  src: url("/dest/fonts/myFont.eot");
-  src: url("/dest/fonts/myFont.eot?#iefix") format("eot"), url("/dest/fonts/myFont.woff2") format("woff2"), url("/dest/fonts/myFont.woff") format("woff"), url("/dest/fonts/myFont.ttf") format("truetype"), url("/dest/fonts/myFont.svg#myFont") format("svg"); }
+  src: url("/dest/fonts/.eot");
+  src: url("/dest/fonts/.eot?#iefix") format("eot"), url("/dest/fonts/.woff2") format("woff2"), url("/dest/fonts/.woff") format("woff"), url("/dest/fonts/.ttf") format("truetype"), url("/dest/fonts/.svg#") format("svg"); }
 
 .tk-icon-test1:before, .tk-icon-test2:before {
-  font-family: "myFont";
+  font-family: "";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
@@ -15,7 +13,7 @@
   text-transform: none; }
 
 .tk-icon-test1:before {
-  content: ""; }
+  content: "\\EA01"; }
 
 .tk-icon-test2:before {
-  content: ""; }
+  content: "\\EA02"; }

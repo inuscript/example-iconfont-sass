@@ -17,6 +17,7 @@
     "extend": "^3.0.0",
     "gulp-cond": "^1.0.0",
     "gulp-iconfont": "^3.0.3",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.0.4",
     "gulp-streamify": "0.0.5",
     "gulp-svgicons2svgfont": "^2.3.1",
