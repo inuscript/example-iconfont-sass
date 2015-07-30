@@ -10,6 +10,7 @@ var jsonSass = require("json-sass")
 var streamify = require("gulp-streamify")
 var source = require("vinyl-source-stream")
 var transform = require("vinyl-transform")
+var transformJsonSass = require("transform-json-sass")
 var mapObj = require('map-obj');
 
 gulp.task("clean", function(){
@@ -37,12 +38,7 @@ gulp.task("font-sass",["font"], function(){
       withQuote: true, // for scss, cannot sass quote and backslash
       withBackslash: true
     }))
-    .pipe(transform(function(){
-      return jsonSass({
-        prefix: "$font:",
-        suffix: " !default"
-      })
-    }))
+    .pipe(transformJsonSass("font", true))
     .pipe(rename("font.scss"))
     .pipe(gulp.dest("./dest/auto-sass"))
 })
