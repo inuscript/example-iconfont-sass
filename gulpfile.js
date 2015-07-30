@@ -31,19 +31,10 @@ gulp.task("font", function(){
 })
 
 gulp.task("font-sass",["font"], function(){
-  var inj = transform(function(filename){
-    return jsonSass({
-      prefix: "$font:",
-      suffix: " !default"
-    })
-  })
-  // var quoted = transform(function(file){
-  //   mapObj(file.data)
-  // })
   return gulp.src(fontSetting.src)
     .pipe(iconfontGlyph({ 
       svgOptions: fontSetting.options,
-      withQuote: true,
+      withQuote: true, // for scss, cannot sass quote and backslash
       withBackslash: true
     }))
     .pipe(transform(function(){
@@ -52,8 +43,6 @@ gulp.task("font-sass",["font"], function(){
         suffix: " !default"
       })
     }))
-    // .pipe(quoted)
-    // .pipe(inj)
     .pipe(rename("font.scss"))
     .pipe(gulp.dest("./dest/auto-sass"))
 })
