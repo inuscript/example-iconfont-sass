@@ -10,7 +10,7 @@ var jsonSass = require("json-sass")
 var streamify = require("gulp-streamify")
 var source = require("vinyl-source-stream")
 var transform = require("vinyl-transform")
-
+var mapObj = require('map-obj');
 
 gulp.task("clean", function(){
   del("dest")
@@ -30,18 +30,32 @@ gulp.task("font", function(){
     .pipe(gulp.dest(fontSetting.dest))
 })
 
-gulp.task("font-sass", function(){
+gulp.task("font-sass",["font"], function(){
   var inj = transform(function(filename){
     return jsonSass({
       prefix: "$font:",
       suffix: " !default"
     })
   })
+  // var quoted = transform(function(file){
+  //   mapObj(file.data)
+  // })
   return gulp.src(fontSetting.src)
-    .pipe(iconfontGlyph(fontSetting.options))
-    .pipe(inj)
+    .pipe(iconfontGlyph({ 
+      svgOptions: fontSetting.options,
+      withQuote: true,
+      withBackslash: true
+    }))
+    .pipe(transform(function(){
+      return jsonSass({
+        prefix: "$font:",
+        suffix: " !default"
+      })
+    }))
+    // .pipe(quoted)
+    // .pipe(inj)
     .pipe(rename("font.scss"))
-    .pipe(gulp.dest("./dest/scss-auto/"))
+    .pipe(gulp.dest("./dest/auto-sass"))
 })
 
 gulp.task("sass", ["font-sass"], function(){

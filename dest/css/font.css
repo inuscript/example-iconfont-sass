@@ -3,7 +3,7 @@
   src: url("/dest/fonts/.eot");
   src: url("/dest/fonts/.eot?#iefix") format("eot"), url("/dest/fonts/.woff2") format("woff2"), url("/dest/fonts/.woff") format("woff"), url("/dest/fonts/.ttf") format("truetype"), url("/dest/fonts/.svg#") format("svg"); }
 
-.tk-icon-test1:before, .tk-icon-test2:before {
+.tk-icon-test1::before, .tk-icon-test2::before {
   font-family: "";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -13,8 +13,8 @@
   text-decoration: none;
   text-transform: none; }
 
-.tk-icon-test1:before {
-  content: ""; }
+.tk-icon-test1::before {
+  content: ; }
 
-.tk-icon-test2:before {
-  content: ""; }
+.tk-icon-test2::before {
+  content: ; }

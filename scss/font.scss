@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import "../dest/scss-auto/font.scss";
+@import "../dest/auto-sass/font.scss";
 
 @mixin font-face($path, $name){
   $url: #{$path}#{$name};
@@ -28,9 +28,9 @@
   }
 
   @each $glyph, $code in $glyphs{
-    #{$prefix}-#{$glyph}:before {
+    #{$prefix}-#{$glyph}::before {
       @extend %icon;
-      content: quote(#{$code});
+      content: #{$code};
     }
   }
 }
