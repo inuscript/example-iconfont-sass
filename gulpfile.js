@@ -2,10 +2,15 @@ var del = require("del")
 var gulp = require("gulp")
 var iconfont = require("gulp-iconfont")
 var sass = require("gulp-sass")
+var tsts = require("./test-task")
 var stream = require("stream")
 var gulpSvgicons2svgfont = require('gulp-svgicons2svgfont')
-var iconfontJson = require("gulp-iconfont-json")
+var iconfontGlyph = require("gulp-iconfont-glyph")
 var jsonSass = require("json-sass")
+var streamify = require("gulp-streamify")
+var source = require("vinyl-source-stream")
+var transform = require("vinyl-transform")
+
 
 gulp.task("clean", function(){
   del("dest")
@@ -27,8 +32,11 @@ gulp.task("font", function(){
 
 gulp.task("font-sass", function(){
   return gulp.src(fontSetting.src)
-    .pipe(iconfontJson(fontSetting.options))
-    .pipe(jsonSass())
+    .pipe(iconfontGlyph(fontSetting.options))
+    .pipe(transform(jsonSass, {
+      prefix: "$font:",
+      suffix: "!default"
+    }))
     .pipe(gulp.dest("./dest/scss/"))
 })
 
