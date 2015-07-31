@@ -13,6 +13,7 @@
     "gulp": "^3.9.0"
   },
   "dependencies": {
+    "JSONStream": "^1.0.4",
     "del": "^1.2.0",
     "extend": "^3.0.0",
     "gulp-cond": "^1.0.0",
@@ -27,6 +28,7 @@
     "plexer": "0.0.3",
     "quote": "^0.4.0",
     "readable-stream": "^2.0.2",
+    "replace-ext": "0.0.1",
     "svgicons2svgfont": "^3.1.0",
     "through2": "^2.0.0",
     "vinyl-source-stream": "^1.1.0",

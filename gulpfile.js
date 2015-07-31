@@ -1,3 +1,5 @@
+var fs = require("fs")
+
 var del = require("del")
 var gulp = require("gulp")
 var iconfont = require("gulp-iconfont")
@@ -12,6 +14,9 @@ var source = require("vinyl-source-stream")
 var transform = require("vinyl-transform")
 var transformJsonSass = require("transform-json-sass")
 var mapObj = require('map-obj');
+var glyphsMap = require('iconfont-glyphs-map');
+var jsonSassObj = require('json-sass-obj');
+var file = require('gulp-file')
 
 gulp.task("clean", function(){
   del("dest")
@@ -28,10 +33,27 @@ var fontSetting = {
 gulp.task("font", function(){
   return gulp.src(fontSetting.src)
     .pipe(iconfont(fontSetting.options))
+      .on('glyphs', function(glyphs){
+        var map = {
+          name: fontSetting.options.fontName,
+          path: fontSetting.options.dest,
+          glyphs: glyphsMap(glyphs, true, true)
+        }
+        file("_map.scss", JSON.stringify(map))
+          .pipe(jsonSassObj({
+            prefix: "$font: ",
+            suffix: " !default;"
+          }))
+          .pipe(gulp.dest("./dest/scss"))
+        gulp.src(["scss/*.scss","dest/scss/*.scss"])
+          .pipe(sass())
+          .pipe(gulp.dest("./dest/css"))
+      })
     .pipe(gulp.dest(fontSetting.dest))
 })
 
 gulp.task("font-sass",["font"], function(){
+  return
   return gulp.src(fontSetting.src)
     .pipe(iconfontGlyph({ 
       svgOptions: fontSetting.options,
@@ -39,7 +61,6 @@ gulp.task("font-sass",["font"], function(){
       withBackslash: true
     }))
     .pipe(transformJsonSass("font", true))
-    .pipe(rename("font.scss"))
     .pipe(gulp.dest("./dest/auto-sass"))
 })
 
