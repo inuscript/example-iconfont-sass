@@ -34,12 +34,11 @@ gulp.task("font", function(){
   return gulp.src(fontSetting.src)
     .pipe(iconfont(fontSetting.options))
       .on('glyphs', function(glyphs){
-        var map = {
+        file("_map.scss", JSON.stringify({
           name: fontSetting.options.fontName,
           path: fontSetting.options.dest,
           glyphs: glyphsMap(glyphs, true, true)
-        }
-        file("_map.scss", JSON.stringify(map))
+        }))
           .pipe(jsonSassObj({
             prefix: "$font: ",
             suffix: " !default;"
