@@ -4,16 +4,8 @@ var del = require("del")
 var gulp = require("gulp")
 var iconfont = require("gulp-iconfont")
 var sass = require("gulp-sass")
-var rename = require("gulp-rename");
 var stream = require("stream")
-var gulpSvgicons2svgfont = require('gulp-svgicons2svgfont')
 var iconfontGlyph = require("gulp-iconfont-glyph")
-var jsonSass = require("json-sass")
-var streamify = require("gulp-streamify")
-var source = require("vinyl-source-stream")
-var transform = require("vinyl-transform")
-var transformJsonSass = require("transform-json-sass")
-var mapObj = require('map-obj');
 var glyphsMap = require('iconfont-glyphs-map');
 var jsonSassObj = require('json-sass-obj');
 var file = require('gulp-file')
@@ -50,18 +42,18 @@ gulp.task("font", function(){
       })
     .pipe(gulp.dest(fontSetting.dest))
 })
-
-gulp.task("font-sass",["font"], function(){
-  return
-  return gulp.src(fontSetting.src)
-    .pipe(iconfontGlyph({ 
-      svgOptions: fontSetting.options,
-      withQuote: true, // for scss, cannot sass quote and backslash
-      withBackslash: true
-    }))
-    .pipe(transformJsonSass("font", true))
-    .pipe(gulp.dest("./dest/auto-sass"))
-})
+// 
+// gulp.task("font-sass",["font"], function(){
+//   return
+//   return gulp.src(fontSetting.src)
+//     .pipe(iconfontGlyph({ 
+//       svgOptions: fontSetting.options,
+//       withQuote: true, // for scss, cannot sass quote and backslash
+//       withBackslash: true
+//     }))
+//     .pipe(transformJsonSass("font", true))
+//     .pipe(gulp.dest("./dest/auto-sass"))
+// })
 
 gulp.task("sass", ["font-sass"], function(){
   gulp.src("scss/**/*.scss")
