@@ -36,4 +36,4 @@
 }
 
 @include font-face("/dest/fonts/", map-get($font, fontName));
-@include generate-icons(".tk-icon", map-get($font, fontName), map-get($font, glyphs));
+@include generate-icons(".icon", map-get($font, fontName), map-get($font, glyphs));
