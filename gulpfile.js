@@ -1,4 +1,5 @@
 var fs = require("fs")
+var path = require("path")
 
 var del = require("del")
 var gulp = require("gulp")
@@ -8,6 +9,8 @@ var iconfont = require("gulp-iconfont")
 var sass = require("gulp-sass")
 var glyphsMap = require('iconfont-glyphs-map');
 var jsonSassObj = require('json-sass-obj');
+
+var iconfontGlyph = require('gulp-iconfont-glyph');
 
 gulp.task("clean", function(){
   del("dest")
@@ -52,7 +55,12 @@ gulp.task("font-with-json", function(){
 
       })
     .pipe(gulp.dest(fontSetting.dest))
-
 })
 
-gulp.task("default", ["font-with-json", "font-with-css"])
+gulp.task("iconfont-glyph", function(){
+  return gulp.src(fontSetting.src)
+    .pipe(iconfontGlyph({ svgOptions : fontSetting.options }))
+    .pipe(gulp.dest(path.join("iconfont-glyph/" , fontSetting.dest)))
+})
+
+gulp.task("default", ["font-with-json", "font-with-css", "iconfont-glyph"])
