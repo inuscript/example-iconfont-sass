@@ -1,14 +1,12 @@
 var fs = require("fs")
-
 var del = require("del")
 var gulp = require("gulp")
+
+var file = require('gulp-file')
 var iconfont = require("gulp-iconfont")
 var sass = require("gulp-sass")
-var stream = require("stream")
-var iconfontGlyph = require("gulp-iconfont-glyph")
 var glyphsMap = require('iconfont-glyphs-map');
 var jsonSassObj = require('json-sass-obj');
-var file = require('gulp-file')
 
 gulp.task("clean", function(){
   del("dest")
@@ -41,6 +39,7 @@ gulp.task("font", function(){
           .pipe(gulp.dest("./dest/css"))
       })
     .pipe(gulp.dest(fontSetting.dest))
+
 })
 // 
 // gulp.task("font-sass",["font"], function(){

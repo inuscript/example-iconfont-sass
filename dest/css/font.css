@@ -14,7 +14,7 @@
   text-transform: none; }
 
 .tk-icon-test1::before {
-  content: ; }
+  content: ""; }
 
 .tk-icon-test2::before {
-  content: ; }
+  content: ""; }

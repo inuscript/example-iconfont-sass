@@ -30,7 +30,7 @@
   @each $glyph, $code in $glyphs{
     #{$prefix}-#{$glyph}::before {
       @extend %icon;
-      content: #{$code};
+      content: quote(#{$code});
     }
   }
 }
