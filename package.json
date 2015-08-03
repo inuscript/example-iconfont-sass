@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp",
-    "test": "npm start -- clean; npm start; npm run diff-dest",
-    "diff-dest": "diff -r dest/ test/fixture/dest/"
+    "build": "npm start -- clean; npm start;",
+    "test": "npm run build; npm run diff-dest",
+    "diff-dest": "diff -r dest/ test/fixture/dest/",
+    "fixture": "npm run build; cp -r dest/ test/fixture/dest/"
   },
   "author": "",
   "license": "ISC",
