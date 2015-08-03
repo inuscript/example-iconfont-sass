@@ -1,4 +1,5 @@
 var fs = require("fs")
+
 var del = require("del")
 var gulp = require("gulp")
 
@@ -20,7 +21,8 @@ var fontSetting = {
     timestamp: 10
   }
 }
-gulp.task("font", function(){
+
+gulp.task("font-with-css", function(){
   return gulp.src(fontSetting.src)
     .pipe(iconfont(fontSetting.options))
       .on('glyphs', function(glyphs){
@@ -41,22 +43,16 @@ gulp.task("font", function(){
     .pipe(gulp.dest(fontSetting.dest))
 
 })
-// 
-// gulp.task("font-sass",["font"], function(){
-//   return
-//   return gulp.src(fontSetting.src)
-//     .pipe(iconfontGlyph({ 
-//       svgOptions: fontSetting.options,
-//       withQuote: true, // for scss, cannot sass quote and backslash
-//       withBackslash: true
-//     }))
-//     .pipe(transformJsonSass("font", true))
-//     .pipe(gulp.dest("./dest/auto-sass"))
-// })
+gulp.task("font-with-json", function(){
+  return gulp.src(fontSetting.src)
+    .pipe(iconfont(fontSetting.options))
+      .on('glyphs', function(glyphs){
+        file("codepoint.json", JSON.stringify(glyphsMap(glyphs, true, true)))
+          .pipe(gulp.dest("./dest/json"))
 
-gulp.task("sass", ["font-sass"], function(){
-  gulp.src("scss/**/*.scss")
-    .pipe(sass())
-    .pipe(gulp.dest("./dest/css"))
+      })
+    .pipe(gulp.dest(fontSetting.dest))
+
 })
-gulp.task("default", ["clean", "sass"])
+
+gulp.task("default", ["clean", "font-with-json", "font-with-css"])
