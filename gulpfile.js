@@ -10,7 +10,7 @@ var sass = require("gulp-sass")
 var glyphsMap = require('iconfont-glyphs-map');
 var jsonSassObj = require('json-sass-obj');
 
-var iconfontGlyph = require('gulp-iconfont-glyph');
+var iconfontStyle = require('gulp-iconfont-style');
 
 gulp.task("clean", function(){
   del("dest")
@@ -57,20 +57,20 @@ gulp.task("font-with-json", function(){
     .pipe(gulp.dest(fontSetting.dest))
 })
 
-gulp.task("iconfont-glyph-css", function(){
+gulp.task("iconfont-style-css", function(){
   return gulp.src(fontSetting.src)
-    .pipe(iconfontGlyph({ svgOptions : fontSetting.options }))
-    .pipe(gulp.dest(path.join(fontSetting.dest, "iconfont-glyph-css")))
+    .pipe(iconfontStyle({ svgOptions : fontSetting.options }))
+    .pipe(gulp.dest(path.join(fontSetting.dest, "iconfont-style-css")))
 })
 
-gulp.task("iconfont-glyph-scss", function(){
+gulp.task("iconfont-style-scss", function(){
   return gulp.src(fontSetting.src)
-    .pipe(iconfontGlyph({ 
+    .pipe(iconfontStyle({ 
       output: "scss",
       svgOptions : fontSetting.options 
     }))
-    .pipe(gulp.dest(path.join(fontSetting.dest, "iconfont-glyph-scss")))
+    .pipe(gulp.dest(path.join(fontSetting.dest, "iconfont-style-scss")))
 })
 
-gulp.task("iconfont-glyph", ["iconfont-glyph-css", "iconfont-glyph-scss",])
-gulp.task("default", ["font-with-json", "font-with-css", "iconfont-glyph"])
+gulp.task("iconfont-style", ["iconfont-style-css", "iconfont-style-scss",])
+gulp.task("default", ["font-with-json", "font-with-css", "iconfont-style"])
