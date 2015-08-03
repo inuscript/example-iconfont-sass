@@ -55,4 +55,4 @@ gulp.task("font-with-json", function(){
 
 })
 
-gulp.task("default", ["clean", "font-with-json", "font-with-css"])
+gulp.task("default", ["font-with-json", "font-with-css"])
