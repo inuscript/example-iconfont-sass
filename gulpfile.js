@@ -60,7 +60,7 @@ gulp.task("font-with-json", function(){
 gulp.task("iconfont-glyph", function(){
   return gulp.src(fontSetting.src)
     .pipe(iconfontGlyph({ svgOptions : fontSetting.options }))
-    .pipe(gulp.dest(path.join("iconfont-glyph/" , fontSetting.dest)))
+    .pipe(gulp.dest(path.join(fontSetting.dest, "iconfont-glyph")))
 })
 
 gulp.task("default", ["font-with-json", "font-with-css", "iconfont-glyph"])

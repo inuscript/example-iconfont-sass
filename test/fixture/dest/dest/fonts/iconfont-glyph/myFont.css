@@ -4,7 +4,7 @@
   src: url("myFont.eot");
   src: url("myFont.eot?#iefix") format("eot"), url("myFont.woff2") format("woff2"), url("myFont.woff") format("woff"), url("myFont.ttf") format("truetype"), url("myFont.svg#myFont") format("svg"); }
 
-.icon-test1::before, .icon-test2::before {
+icon-test1::before, icon-test2::before {
   font-family: "myFont";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -14,8 +14,8 @@
   text-decoration: none;
   text-transform: none; }
 
-.icon-test1::before {
+icon-test1::before {
   content: ""; }
 
-.icon-test2::before {
+icon-test2::before {
   content: ""; }
