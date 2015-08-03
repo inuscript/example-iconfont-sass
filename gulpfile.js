@@ -57,10 +57,20 @@ gulp.task("font-with-json", function(){
     .pipe(gulp.dest(fontSetting.dest))
 })
 
-gulp.task("iconfont-glyph", function(){
+gulp.task("iconfont-glyph-css", function(){
   return gulp.src(fontSetting.src)
     .pipe(iconfontGlyph({ svgOptions : fontSetting.options }))
-    .pipe(gulp.dest(path.join(fontSetting.dest, "iconfont-glyph")))
+    .pipe(gulp.dest(path.join(fontSetting.dest, "iconfont-glyph-css")))
 })
 
+gulp.task("iconfont-glyph-scss", function(){
+  return gulp.src(fontSetting.src)
+    .pipe(iconfontGlyph({ 
+      output: "scss",
+      svgOptions : fontSetting.options 
+    }))
+    .pipe(gulp.dest(path.join(fontSetting.dest, "iconfont-glyph-scss")))
+})
+
+gulp.task("iconfont-glyph", ["iconfont-glyph-css", "iconfont-glyph-scss",])
 gulp.task("default", ["font-with-json", "font-with-css", "iconfont-glyph"])
