@@ -11,14 +11,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "del": "^1.2.0",
+    "del": "^2.2.2",
     "gulp": "^3.9.0"
   },
   "dependencies": {
-    "gulp-file": "^0.2.0",
-    "gulp-iconfont": "^4.0.0",
-    "gulp-sass": "^2.0.4",
-    "iconfont-glyphs-map": "^0.1.0",
+    "gulp-file": "^0.3.0",
+    "gulp-iconfont": "^8.0.1",
+    "gulp-sass": "^3.0.0",
+    "iconfont-glyphs-map": "^0.2.1",
     "json-sass-obj": "^0.1.0"
   }
 }
